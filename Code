@@ -1,0 +1,84 @@
+#code for random password generator using GUI
+
+
+from tkinter import *
+import string
+import random
+import pyperclip
+
+digits = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
+lowercase = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h',             'i', 'j', 'k', 'm', 'n', 'o', 'p', 'q',             'r', 's', 't', 'u', 'v', 'w', 'x', 'y',             'z']
+
+uppercase = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H',             'I', 'J', 'K', 'M', 'N', 'O', 'P', 'Q',             'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y',             'Z']
+
+symbols = ['@', '#', '$', '%', '=', ':', '?', '.', '/', '|', '~', '>',           '*', '(', ')', '<']
+
+def generate_password():
+    small_alphabets=lowercase
+    capital_alphabets=uppercase
+    numbers=digits
+    special_characters=symbols
+
+    all=small_alphabets+capital_alphabets+numbers+special_characters
+    password_length=int(length_Box.get())
+
+    if choice.get()==1:
+        passwordtype.delete(0, END) # clear existing content
+        passwordtype.insert(0,''.join(random.sample(small_alphabets,password_length)))
+
+    if choice.get()==2:
+        passwordtype.delete(0, END) # clear existing content
+        passwordtype.insert(0,''.join(random.sample(small_alphabets+capital_alphabets,password_length)))
+
+    if choice.get()==3:
+        passwordtype.delete(0, END) # clear existing content
+        passwordtype.insert(0,''.join(random.sample(all,password_length)))
+
+
+def copy():
+    random_password=passwordtype.get()
+    pyperclip.copy(random_password)
+
+def clear():
+    passwordtype.delete(0, END)    
+    
+root=Tk()
+root.config(bg='gray20')
+choice=IntVar()
+Font=('arial',13,'bold')
+
+
+
+passwordLabel=Label(root,text='Random Password Generator',font=('times new roman',20,'bold'),bg='gray20',fg='white')
+passwordLabel.grid(pady=10)
+
+weakradioButton=Radiobutton(root,text='Weak',value=1,variable=choice,font=Font)
+weakradioButton.grid(pady=5)
+
+mediumradioButton=Radiobutton(root,text='Medium',value=2,variable=choice,font=Font)
+mediumradioButton.grid(pady=5)
+
+strongradioButton=Radiobutton(root,text='Strong',value=3,variable=choice,font=Font)
+strongradioButton.grid(pady=5)
+
+lengthLabel=Label(root,text='Password Length',font=Font,bg='gray20',fg='white')
+lengthLabel.grid(pady=5)
+
+length_Box=Spinbox(root,from_=8,to_=18,width=5,font=Font)
+length_Box.grid(pady=5)
+
+generateButton=Button(root,text='Generate',font=Font,command=generate_password)
+generateButton.grid(pady=5)
+
+passwordtype=Entry(root,width=25,bd=5,font=Font)
+passwordtype.grid(pady=5)
+
+copyButton=Button(root,text='Copy',font=Font,command=copy)
+copyButton.grid(row=9, column=0, pady=5, padx=10)
+
+deleteButton=Button(root,text='Clear',font=Font,command=clear)
+deleteButton.grid(row=9, column=1, pady=5, padx=10)
+
+
+
+root.mainloop()
